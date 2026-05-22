@@ -1,0 +1,14 @@
+# Ignora solo el .env principal
+.env
+
+# Ignora todas las variantes de .env
+.env*
+
+# Ignora variantes específicas pero permite .env.example
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Ignorar .env en cualquier subcarpeta
+**/.env
