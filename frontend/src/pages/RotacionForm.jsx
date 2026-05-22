@@ -26,9 +26,12 @@ const RotacionForm = () => {
                 <Box component="form" onSubmit={handleSubmit}>
                     <TextField fullWidth margin="normal" label="Nombre (ej: Mayo 2026)" required 
                         value={nombre} onChange={e=>setNombre(e.target.value)} />
-                    <TextField fullWidth margin="normal" label="Fecha Inicio" type="date" InputLabelProps={{ shrink: true }} required 
+                    <Typography variant="body2" color="text.secondary" mt={2} mb={1}>Fecha Inicio *</Typography>
+                    <TextField fullWidth type="date" required 
                         value={fechaInicio} onChange={e=>setFechaInicio(e.target.value)} />
-                    <TextField fullWidth margin="normal" label="Fecha Fin" type="date" InputLabelProps={{ shrink: true }} required 
+
+                    <Typography variant="body2" color="text.secondary" mt={2} mb={1}>Fecha Fin *</Typography>
+                    <TextField fullWidth type="date" required 
                         value={fechaFin} onChange={e=>setFechaFin(e.target.value)} />
                     <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, py: 1.5 }}>Siguiente: Configurar</Button>
                 </Box>

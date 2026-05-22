@@ -1,25 +1,34 @@
 server:
   port: 8080
-
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:h2:file:./data/schedulerdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
+    # --- Configuración H2 (Local/Desarrollo) ---
+    # url: jdbc:h2:file:./data/schedulerdb
+    # driverClassName: org.h2.Driver
+    # username: sa
+    # password: password
+    
+    # --- Configuración PostgreSQL (Producción / Desarrollo Seguro) ---
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:scheduler_db}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
+      # NUNCA uses 'update' en un entorno de producción real, usa 'validate' o 'none'.
+      # Por ahora, como estás desarrollando activamente, 'update' te ahorrará tiempo.
       ddl-auto: update
-    show-sql: true
+    show-sql: false # Apagado en producción para no saturar los logs
     properties:
       hibernate:
-        format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
+        format_sql: false
+  # h2:
+  #   console:
+  #     enabled: false # H2 Console debe estar completamente apagada si usas Postgres
 jwt:
-  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  # Nunca dejes el secreto JWT quemado en el código, usa variables de entorno para producción.
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
   expiration: 86400000 # 24 hours

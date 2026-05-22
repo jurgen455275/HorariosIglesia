@@ -51,4 +51,27 @@ public class TurnoController {
             .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
             .body(new InputStreamResource(in));
     }
+    @PostMapping
+    public Turno createManual(@PathVariable Long rotacionId, @RequestBody Turno request, @AuthenticationPrincipal Usuario usuario) {
+        Rotacion r = rotacionRepository.findById(rotacionId).orElseThrow();
+        if(!r.getUsuario().getId().equals(usuario.getId())) throw new RuntimeException("No autorizado");
+        request.setRotacion(r);
+        return turnoRepository.save(request);
+    }
+
+    @PutMapping("/{turnoId}")
+    public Turno updateManual(@PathVariable Long rotacionId, @PathVariable Long turnoId, @RequestBody Turno request, @AuthenticationPrincipal Usuario usuario) {
+        Rotacion r = rotacionRepository.findById(rotacionId).orElseThrow();
+        if(!r.getUsuario().getId().equals(usuario.getId())) throw new RuntimeException("No autorizado");
+        Turno t = turnoRepository.findById(turnoId).orElseThrow();
+        if(!t.getRotacion().getId().equals(rotacionId)) throw new RuntimeException("No coincide");
+        
+        t.setFecha(request.getFecha());
+        t.setMiembro1(request.getMiembro1());
+        t.setAnotacionM1(request.getAnotacionM1());
+        t.setMiembro2(request.getMiembro2());
+        t.setAnotacionM2(request.getAnotacionM2());
+        t.setRespaldo(request.getRespaldo());
+        return turnoRepository.save(t);
+    }
 }

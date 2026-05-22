@@ -85,6 +85,12 @@ public class GeneradorService {
 
                 if (principalObligatorio && !m1.isEsPrincipal() && !m2.isEsPrincipal()) continue; 
                 
+                // Evitar que ambos cubran solo la misma mitad del día (dejando la otra mitad vacía)
+                if (disp1.getFranjaHoraria() == Disponibilidad.FranjaHoraria.PRIMERA_MITAD && 
+                    disp2.getFranjaHoraria() == Disponibilidad.FranjaHoraria.PRIMERA_MITAD) continue;
+                if (disp1.getFranjaHoraria() == Disponibilidad.FranjaHoraria.SEGUNDA_MITAD && 
+                    disp2.getFranjaHoraria() == Disponibilidad.FranjaHoraria.SEGUNDA_MITAD) continue;
+                
                 for (Disponibilidad dispRespaldo : copiaDisponibles) {
                     if (dispRespaldo.getFranjaHoraria() != Disponibilidad.FranjaHoraria.COMPLETA) continue;
                     Miembro respaldo = dispRespaldo.getMiembro();
