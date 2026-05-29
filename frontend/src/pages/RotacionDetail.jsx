@@ -281,6 +281,14 @@ const RotacionDetail = () => {
         }
     };
 
+    const getDayName = (dateString) => {
+        if (!dateString) return '';
+        const [year, month, day] = dateString.split('-').map(Number);
+        if ([year, month, day].some((value) => Number.isNaN(value))) return '';
+        const date = new Date(year, month - 1, day);
+        return date.toLocaleDateString('es-ES', { weekday: 'long' });
+    };
+
     if (!rotacion) {
         return (
             <Container sx={{ mt: 5 }}>
@@ -860,6 +868,10 @@ const RotacionDetail = () => {
                                 </TableCell>
 
                                 <TableCell sx={{ fontWeight: 700, color: '#0C2C55' }}>
+                                    Día
+                                </TableCell>
+
+                                <TableCell sx={{ fontWeight: 700, color: '#0C2C55' }}>
                                     Principal
                                 </TableCell>
 
@@ -893,6 +905,8 @@ const RotacionDetail = () => {
                                 >
 
                                     <TableCell>{t.fecha}</TableCell>
+
+                                    <TableCell>{getDayName(t.fecha)}</TableCell>
 
                                     <TableCell>
                                         {t.miembro1?.nombre || '-'}
